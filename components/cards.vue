@@ -3,7 +3,7 @@
     <div class="internal-wrapper max-wrapper">
       <h1 v-if="title">{{ title }}</h1>
       <div class="cards-con" v-if="cards?.length">
-        <Card v-for="card in cards" :key="card._key" v-bind="card"/>
+        <Card v-for="card in cards" :key="card._key" v-bind="{...card, cardBgColor, cardTextColor}"/>
       </div>
     </div>
   </div>
@@ -12,6 +12,8 @@
 interface Props {
   skewedBackground?: boolean;
   backgroundColor?: { hex: string };
+  cardBgColor?: { hex: string };
+  cardTextColor?: { hex: string };
   title?: string;
   cards?: [{
     heading: string;

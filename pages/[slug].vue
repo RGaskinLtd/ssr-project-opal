@@ -12,7 +12,27 @@ interface Page {
   pageBuilder: any[]
 }
 const route = useRoute();
-const query = groq`*[_type == "page" && slug.current == "${route.params.slug}" ][0]`;
+const query = groq`*[_type == "page" && slug.current == "${route.params.slug}" ][0]{
+  ...,
+  'pageBuilder': pageBuilder[]{
+    ...,
+    defined(cards) => {
+      ...,
+      'cards': cards[]{
+        ...,
+        defined(cta) => {
+          'cta': cta {
+            ...,
+            'link': select(
+              link->slug.current == '/' => link->slug.current,
+              link->slug.current != '/' => '/'+link->slug.current,
+            )
+          }
+        }
+      }
+    },
+  }
+}`;
 const components = shallowRef();
 const { $preview } = useNuxtApp();
 const isPreview = route.query.preview === 'true';

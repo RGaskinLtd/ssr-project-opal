@@ -1,105 +1,96 @@
 <template>
-  <nav ref="nav" class="transition-all transition-duration-300">
-    <Menubar class="max-wrapper transition-all transition-duration-300" :model="navLinks">
+  <nav ref="nav" class="transition-all transition-duration-300" :style="{
+    '--primaryNavColor': rgbStringFromObj(navBarSettings.primaryNavColor),
+    '--secondaryNavColor': rgbStringFromObj(navBarSettings.secondaryNavColor)
+  }">
+    <Menubar class="max-wrapper transition-all transition-duration-300" :model="navBarItems">
       <template #start>
-          <img alt="logo" src="~/assets/images/logo/logo.png" class="mr-2 max-h-12" />
+          <a :href="navBarSettings.logoObj.link">
+            <img alt="logo" :src="navBarSettings.logoObj.logo" class="mr-2 max-h-12" />
+          </a>
       </template>
     </Menubar>
   </nav>
 </template>
 <script setup lang="ts">
-interface NavItem {
-  label: string;
-  to?: string;
-  items?: NavItem[]
-}
-interface SubMenu {
-  title: string;
-  group: string[];
-}
-
 const nav = ref(null);
+import { RGBObj } from '~/utils/color';
 
-const pagesQuery = groq`*[_type == "page" && slug.current != "/" && !(_id in path('drafts.**'))]{ 'label': title, 'to': slug.current }`;
-const pages = await useSanityQuery(pagesQuery);
-
+interface navBarItem {
+  label: string;
+  to: string;
+  items?: navBarItem[];
+}
+interface NavBarSettings {
+  primaryNavColor: RGBObj;
+  secondaryNavColor: RGBObj;
+  logoObj: {
+    logo: string;
+    link: string;
+  }
+}
 const navBarQuery = groq`*[_type == "settings"] {
-  'primaryNavColor': defaultBgColor.hex,
-  'secondaryNavColor': secondaryBgColor.hex,
-  'navItems': menuItems[]->{
-    title,
-    'slug': slug.current,
-    'group': group[]->{
-      title,
-      'slug': slug.current,
+  'navSettings': navSettings {
+    'primaryNavColor': defaultBgColor.rgb,
+    'secondaryNavColor': secondaryBgColor.rgb,
+    'logoObj': logoObj {
+      'logo': logo.asset->url,
+      'link': select(
+        link->slug.current == '/' => link->slug.current,
+        link->slug.current != '/' => '/'+link->slug.current,
+      ),
+    },
+    'navItems': menuItems[]->{
+      'label': title,
+      'to': select(
+        slug.current == '/' => slug.current,
+        slug.current != '/' => '/'+slug.current,
+      ),
+      'items': group[]->{
+        'label': title,
+        'to': select(
+          slug.current == '/' => slug.current,
+          slug.current != '/' => '/'+slug.current,
+        ),
+        'items': group[]->{
+          'label': title,
+          'to': select(
+            slug.current == '/' => slug.current,
+            slug.current != '/' => '/'+slug.current,
+          ),
+        }
+      }
     }
   }
 }`;
-const submenus = await useSanityQuery(navBarQuery);
-
-const pagesData = pages.data.value as NavItem[];
-const submenuData = submenus.data.value as SubMenu[];
-
-function addSubmenu({
-  links = [] as NavItem[],
-  item = { label: '', to: '' } as NavItem,
-  itemsInSubmenu = [] as string[],
-  subMenuTitle = ''
-}) {
-  const linksCopy = [...links];
-  const slug = item?.to ?? '';
-
-  // Function Guards
-  if (!itemsInSubmenu.length) return;
-  if (!itemsInSubmenu.includes(slug)) return;
-
-  // Function Logic
-  const itemsInSubmenuItemIndex = linksCopy.findIndex((link: NavItem) => link.items && link.label === subMenuTitle);
-  if (itemsInSubmenuItemIndex !== -1) linksCopy[itemsInSubmenuItemIndex].items?.push(item);
-  else linksCopy.push({ label: subMenuTitle, items: [item] });
-
-  return linksCopy;
-}
-const navLinks = computed(() => {
-  let links: NavItem[] = [];
-
-  const skipItems = [] as string[];
-  pagesData.forEach((item) => {
-    submenuData.forEach(submenu => {
-      const newLinks = addSubmenu({ links, item, itemsInSubmenu: submenu.group, subMenuTitle: submenu.title })
-      if (!newLinks) return;
-      if (item.to) skipItems.push(item.to);
-      links = newLinks;
-    })
-    if (item.to && skipItems.includes(item.to)) return;
-    links.push(item)
-  })
-  return links;
-})
+const navBar = await useSanityQuery(navBarQuery);
+const navBarSettings = navBar.data.value[0].navSettings as NavBarSettings
+const navBarItems = navBar.data.value[0].navSettings.navItems as navBarItem[];
 
 function updateNavBar() {
   // const isDesktop = window.innerWidth > 960;
   // if (!isDesktop) return;
-
   const scrollPos = window.scrollY;
   const root = document.documentElement;
   const navRef = nav.value as unknown as HTMLElement
   const navHeight = navRef.clientHeight;
-  if (scrollPos > navHeight) return root.style.setProperty('--bgColor', 'rgb(0 0 0 / 87%)')
-  root.style.setProperty('--bgColor', '#3700b3')
+  if (scrollPos > navHeight) return root.style.setProperty('--bgColor', rgbStringFromObj(navBarSettings.secondaryNavColor))
+  root.style.setProperty('--bgColor', rgbStringFromObj(navBarSettings.primaryNavColor))
 }
 
 onMounted(() => {
   window.addEventListener('scroll', updateNavBar);
+  const root = document.documentElement;
+  root.style.setProperty('--bgColor', rgbStringFromObj(navBarSettings.primaryNavColor));
 })
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateNavBar);
+  window.removeEventListener('scroll', updateNavBar);
 })
 
 </script>
 <style>
 :root {
-  --bgColor: #3700b3;
+  --bgColor: --primaryNavColor;
 }
 </style>
 <style lang="scss" scoped>
@@ -151,26 +142,5 @@ nav {
   z-index: 99;
   background-color: var(--bgColor);
   color: #fff;
-  .desktop-menu {
-    position: relative;
-    padding: 2rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    a {
-      text-transform: uppercase;
-      color: #F7EEE2;
-      text-decoration: none;
-    }
-    .links {
-      .nav-link {
-        padding: 0 1rem;
-        &:hover {
-          a {
-            color: #0CCDA3;
-          }
-        }
-      }
-    }
-  }
 }
 </style>

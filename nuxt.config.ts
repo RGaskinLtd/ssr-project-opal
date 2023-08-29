@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     },
   },
   sanity: {
-    projectId: 'vduxpjnc',
+    projectId: process.env.NUXT_SANITY_PROJECT,
     dataset: 'production',
     apiVersion: 'v2021-10-21',
     useCdn: false,

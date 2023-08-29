@@ -5,7 +5,7 @@
     }">
     <div class="inner-wrapper max-wrapper">
       <div class="text-overlay lg:max-w-60 px-3">
-        <h1>{{ heading }}</h1>
+        <h1 :class="{'green-overline': headingObj.greenOverline}">{{ headingObj.heading }}</h1>
         <span>{{ tagline }}</span>
       </div>
     </div>
@@ -14,7 +14,10 @@
 <script setup lang="ts">
 const { $urlFor } = useNuxtApp()
 interface Props {
-  heading: string;
+  headingObj: {
+    heading: string;
+    greenOverline: string;
+  };
   tagline?: string;
   bgColor?: {
     hex: string;

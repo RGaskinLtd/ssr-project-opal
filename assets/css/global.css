@@ -41,6 +41,19 @@ h4 {font-size: 1.2rem; line-height: 1.7rem;}
   height: 3px;
   background-color:#0ecda3;
 }
+.green-overline {
+  position: relative;
+  margin-top: 3rem;
+}
+.green-overline::after {
+  content: '';
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background-color:#0ecda3;
+}
 .link-with-arrow {
   font-family: 'Montserrat',sans-serif;
   display: inline-block;
