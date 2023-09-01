@@ -1,9 +1,8 @@
 <template>
   <div>
-    <!-- TODO add nav component -->
-    <navbar/>
+    <Navbar/>
     <NuxtPage />
-    <!-- TODO add footer component -->
+    <Footer/>
   </div>
 </template>
 <style>

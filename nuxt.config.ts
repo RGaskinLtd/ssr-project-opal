@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: ['@nuxtjs/sanity'],
   runtimeConfig: {
     sanity: {
@@ -19,11 +19,12 @@ export default defineNuxtConfig({
     '~/assets/css/theme.css',
     'primevue/resources/primevue.css',
     'primeicons/primeicons.css',
-    'primeflex/primeflex.css'
+    // 'primeflex/primeflex.css'
   ],
   build: {
     transpile: ["primevue"]
   },
+  components: [{ path: '~/components', pathPrefix: false }],
   postcss: {
     plugins: {
       tailwindcss: {},

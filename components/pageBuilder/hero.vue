@@ -1,12 +1,16 @@
 <template>
   <div class="hero" :style="{
     'background-color': bgColor?.hex,
-    'background-image': `url(${heroImage ? heroImage : ''})`
+    'color': textColor?.hex ?? '#fff',
+    'background-image': `url(${heroBgImage ?? ''})`
     }">
-    <div class="inner-wrapper max-wrapper">
-      <div class="text-overlay lg:max-w-60 px-3">
+    <div :class="['inner-wrapper max-wrapper', {'justify-around': heroImage?.asset}, {'justify-start': !heroImage?.asset}]">
+      <div class="text-overlay w-full sm:w-full md:w-full lg:max-w-60 px-3">
         <h1 :class="{'green-overline': headingObj.greenOverline}">{{ headingObj.heading }}</h1>
         <span>{{ tagline }}</span>
+      </div>
+      <div v-if="heroImage" class="hero-image max-w-60 pt-8 sm:pt-8 md:pt-8 lg:px-3 lg:pt-0 lg:max-w-30">
+        <img v-if="heroImage.asset" :src="$urlFor(heroImage.asset._ref).url()" :alt="heroImage.alt"/>
       </div>
     </div>
   </div>
@@ -22,7 +26,17 @@ interface Props {
   bgColor?: {
     hex: string;
   };
-  image?: {
+  textColor?: {
+    hex: string;
+  };
+  bgImage?: {
+    asset: {
+      _ref: string;
+      _type: string;
+    },
+    alt: string;
+  };
+  heroImage?: {
     asset: {
       _ref: string;
       _type: string;
@@ -31,22 +45,21 @@ interface Props {
   };
 }
 const props = defineProps<Props>()
-
-const heroImage = ref('');
+const heroBgImage = ref('');
 
 function getHeroImage() {
-  if(!props.image) return;
+  if(!props.bgImage) return;
   const width = window.innerWidth;
   const isMobile = width < 768;
   const isTablet = width < 1024;
   const isDesktop = width >= 1024
 
-  if (isMobile) return $urlFor(props.image.asset._ref).width(768).height(400).url();
-  if (isTablet) return $urlFor(props.image.asset._ref).width(1024).height(500).url();
-  if (isDesktop) return $urlFor(props.image.asset._ref).width(1920).height(500).url();
+  if (isMobile) return $urlFor(props.bgImage.asset._ref).width(768).height(400).url();
+  if (isTablet) return $urlFor(props.bgImage.asset._ref).width(1024).height(500).url();
+  if (isDesktop) return $urlFor(props.bgImage.asset._ref).width(1920).height(500).url();
 }
 function setHeroImage() {
-  heroImage.value = getHeroImage() ?? '';
+  heroBgImage.value = getHeroImage() ?? '';
 }
 onMounted(() => {
   setHeroImage()
@@ -69,9 +82,12 @@ onBeforeUnmount(() => {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: start;
+    flex-wrap: wrap;
     align-items: center;
     padding: 3rem 0;
+    .hero-image {
+      width: 100%;
+    }
     // &.has-image {
     //   position: absolute;
     // top: 0;

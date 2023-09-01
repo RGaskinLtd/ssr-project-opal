@@ -9,6 +9,17 @@
             <img alt="logo" :src="navBarSettings.logoObj.logo" class="mr-2 max-h-12" />
           </a>
       </template>
+      <template #end v-if="navBarSettings?.contactUsObj?.enabled">
+        <a
+          v-if="navBarSettings?.contactUsObj?.link || navBarSettings?.contactUsObj?.text"
+          class="btn"
+          :style="{
+            'background-color': '#fff',
+            'color': '#000'
+          }"
+          :href="navBarSettings?.contactUsObj?.link"
+        >{{ navBarSettings?.contactUsObj?.text }}</a>
+      </template>
     </Menubar>
   </nav>
 </template>
@@ -28,6 +39,11 @@ interface NavBarSettings {
     logo: string;
     link: string;
   }
+  contactUsObj: {
+    enabled: boolean;
+    text: string;
+    link: string;
+  }
 }
 const navBarQuery = groq`*[_type == "settings"] {
   'navSettings': navSettings {
@@ -44,22 +60,29 @@ const navBarQuery = groq`*[_type == "settings"] {
       'label': title,
       'to': select(
         slug.current == '/' => slug.current,
-        slug.current != '/' => '/'+slug.current,
+        slug.current != '/' => '/'+ slug.current,
       ),
       'items': group[]->{
         'label': title,
         'to': select(
           slug.current == '/' => slug.current,
-          slug.current != '/' => '/'+slug.current,
+          slug.current != '/' => '/'+ slug.current,
         ),
         'items': group[]->{
           'label': title,
           'to': select(
             slug.current == '/' => slug.current,
-            slug.current != '/' => '/'+slug.current,
+            slug.current != '/' => '/'+ slug.current,
           ),
         }
       }
+    },
+    'contactUsObj': contactUsObj {
+        ...,
+        'link': select(
+          link->slug.current == '/' => link->slug.current,
+          link->slug.current != '/' => '/'+link->slug.current,
+        )
     }
   }
 }`;
@@ -134,6 +157,13 @@ onBeforeUnmount(() => {
   }
   .p-menubar .p-menuitem.p-highlight>.p-menuitem-content .p-menuitem-link .p-menuitem-text {
     color: #fff;
+  }
+  .p-menubar .p-menubar-end {
+    margin-left: 0;
+  }
+  .btn {
+    text-transform: uppercase;
+    padding: 0.75rem 1.25rem;
   }
 }
 nav {

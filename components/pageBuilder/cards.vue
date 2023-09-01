@@ -1,5 +1,5 @@
 <template>
-  <div :class="['cards', {'skewed-background': skewedBackground}]" :style="[{'--bgColor': backgroundColor?.hex}, {'background-color': !skewedBackground ? backgroundColor?.hex : ''}]">
+  <div :class="['cards', {'skewed-background': skewedBackground}]" :style="[{'color': cardTextColor?.hex},{'--bgColor': backgroundColor?.hex}, {'background-color': !skewedBackground ? backgroundColor?.hex : ''}]">
     <div class="internal-wrapper max-wrapper">
       <h1 v-if="title">{{ title }}</h1>
       <div class="cards-con" v-if="cards?.length">

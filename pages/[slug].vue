@@ -12,7 +12,7 @@ interface Page {
   pageBuilder: any[]
 }
 const route = useRoute();
-const query = groq`*[_type == "page" && slug.current == "${route.params.slug}" ][0]{
+const query = groq`*[_type == "page" && slug.current == "${route.params.slug}" ][0] {
   ...,
   'pageBuilder': pageBuilder[]{
     ...,
@@ -31,6 +31,15 @@ const query = groq`*[_type == "page" && slug.current == "${route.params.slug}" ]
         }
       }
     },
+    defined(ctaObj) => {
+      'ctaObj': ctaObj {
+        ...,
+        'link': select(
+          link->slug.current == '/' => link->slug.current,
+          link->slug.current != '/' => '/'+link->slug.current,
+        )
+      }
+    }
   }
 }`;
 const components = shallowRef();
@@ -63,7 +72,7 @@ function updateComponents(pageBuilder: any[]) {
     const {_type, ...data} = component;
     return {
       data: data,
-      component: defineAsyncComponent(() => import(`@/components/${_type}.vue`))
+      component: defineAsyncComponent(() => import(`@/components/pageBuilder/${_type}.vue`))
     }
   })
 }
