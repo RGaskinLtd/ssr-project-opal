@@ -1,9 +1,15 @@
 <template>
-  <div class="card profile" :style="{'--bgColor': cardBgColor?.hex ?? '', '--textColor': cardTextColor?.hex ?? ''}">
-    <div v-if="title" class="card-title">{{ title }}</div>
+  <div class="card profile bg-primary w-full text-white md:w-[calc((100%-4rem)/3)]">
+    <div v-if="title" class="card-title">
+      {{ title }}
+    </div>
     <div v-if="content || heading" class="card-content">
-      <h4 v-if="heading" class="green-underline">{{ heading }}</h4>
-      <p v-if="content" class="smaller">{{ content }}</p>
+      <h4 v-if="heading" class=" font-main green-underline">
+        {{ heading }}
+      </h4>
+      <p v-if="content" class="smaller">
+        {{ content }}
+      </p>
     </div>
     <div v-if="cta" class="card-links">
       <a class="link-with-arrow uppercase" :href="cta?.link">{{ cta?.text }}</a>
@@ -33,17 +39,15 @@ const props = defineProps<Props>()
 
 .card {
   position: relative;
-  width: calc((100% - 4rem) / 3);
+  // width: calc((100% - 4rem) / 3);
   box-sizing: border-box;
-  background-color: var(--bgColor);
-  color: var(--textColor);
   border-radius: var(--borderRadius);
   box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
-  @media(max-width: 1024px) { width: calc((100% - 2rem) / 2); }
-  @media(max-width: 768px) { width: 100%; }
+  justify-content: flex-start;
+  // @media(max-width: 1024px) { width: calc(100%); }
+  // @media(max-width: 768px) { width: 100%; }
   h4, p {width: 100%; text-align: left;}
   &.profile {
     .card-content { padding-top: 5rem; }
@@ -67,11 +71,6 @@ const props = defineProps<Props>()
     padding-bottom: 1rem;
     -webkit-flex-grow: 1;
     flex-grow: 1;
-    h4 {
-      font-size: 2.1875rem;
-      line-height: 2.5rem;
-      font-family: 'Montserrat','Poppin',sans-serif;
-    }
   }
   .card-links {
     padding: 0 18px 18px 18px;

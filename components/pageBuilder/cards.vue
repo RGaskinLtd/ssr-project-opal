@@ -1,9 +1,11 @@
 <template>
-  <div :class="['cards', {'skewed-background': skewedBackground}]" :style="[{'color': cardTextColor?.hex},{'--bgColor': backgroundColor?.hex}, {'background-color': !skewedBackground ? backgroundColor?.hex : ''}]">
+  <div :class="['cards bg-background pb-12 pt-0 text-white md:pb-28 md:pt-16']">
     <div class="internal-wrapper max-wrapper">
-      <h1 v-if="title">{{ title }}</h1>
-      <div class="cards-con" v-if="cards?.length">
-        <Card v-for="card in cards" :key="card._key" v-bind="{...card, cardBgColor, cardTextColor}"/>
+      <h1 v-if="title" class="mb-12">
+        {{ title }}
+      </h1>
+      <div v-if="cards?.length" class="cards-con">
+        <Card v-for="card in cards" :key="card._key" v-bind="{...card, cardBgColor, cardTextColor}" />
       </div>
     </div>
   </div>
@@ -41,22 +43,11 @@ const props = defineProps<Props>()
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
-  padding: 2rem 0;
-  &.skewed-background {
-    &::before {
-      background-color: var(--bgColor);
-    }
-    .internal-wrapper {
-      position: relative;
-      top: -5rem;
-    }
-  }
   .internal-wrapper {
     display: flex;
     flex-wrap: wrap;
-    width: calc(100% - 4rem);
+    //width: calc(100% - 4rem);
     justify-content: center;
-    h1 { margin-top: 0; margin-bottom: 1rem; }
     .cards-con {
       width: 100%;
       display: flex;

@@ -4,6 +4,6 @@ export interface RGBObj {
   b: number;
   a: number;
 }
-export function rgbStringFromObj(rgbObj: RGBObj) {
-  return `rgb(${rgbObj.r} ${rgbObj.g} ${rgbObj.b} / ${rgbObj.a * 100}%)`;
+export function rgbStringFromObj (rgbObj: RGBObj) {
+  return `rgb(${rgbObj.r} ${rgbObj.g} ${rgbObj.b} / ${rgbObj.a * 100}%)`
 }

@@ -1,16 +1,19 @@
 <template>
-  <footer class="transition-all transition-duration-300" :style="{
-    'background-color': rgbStringFromObj(footerSettings.bgColor),
-    'color': rgbStringFromObj(footerSettings.textColor)
-  }">
+  <footer
+    class="transition-duration-300 transition-all"
+    :style="{
+      'background-color': rgbStringFromObj(footerSettings.bgColor),
+      'color': rgbStringFromObj(footerSettings.textColor)
+    }"
+  >
     <div class="info max-wrapper">
       <div class="social-icons">
-        <a v-if="footerSettings.socialLinks.linkedin" :href="footerSettings.socialLinks.linkedin"><i class="pi pi-linkedin"/></a>
-        <a v-if="footerSettings.socialLinks.github" :href="footerSettings.socialLinks.github"><i class="pi pi-github"/></a>
-        <a v-if="footerSettings.socialLinks.facebook" :href="footerSettings.socialLinks.facebook"><i class="pi pi-facebook"/></a>
+        <a v-if="footerSettings.socialLinks.linkedin" :href="footerSettings.socialLinks.linkedin"><i class="pi pi-linkedin" /></a>
+        <a v-if="footerSettings.socialLinks.github" :href="footerSettings.socialLinks.github"><i class="pi pi-github" /></a>
+        <a v-if="footerSettings.socialLinks.facebook" :href="footerSettings.socialLinks.facebook"><i class="pi pi-facebook" /></a>
       </div>
       <div class="nav-items">
-        <a class="nav-link mx-2" v-for="item in navItems" :href="item.to">{{ item.label }}</a>
+        <a v-for="(item, index) in navItems" :key="index" class="nav-link mx-2" :href="item.to">{{ item.label }}</a>
       </div>
     </div>
     <div class="copyright max-wrapper">
@@ -19,7 +22,7 @@
   </footer>
 </template>
 <script setup lang="ts">
-import { RGBObj } from '~/utils/color';
+import { RGBObj } from '~/utils/color'
 
 interface NavItem {
   label: string;
@@ -51,15 +54,14 @@ const footerQuery = groq`*[_type == "settings"] {
     'bgColor': bgColor.rgb,
     'textColor': textColor.rgb,
   }
-}`;
-const footer = await useSanityQuery(footerQuery);
-const footerSettings = footer.data.value[0].footer as Footer
-const navItems = footer.data.value[0].navItems as NavItem[];
+}`
+const footer = await useSanityQuery(footerQuery)
+const footerSettings = footer.data.value[0]?.footer as Footer
+const navItems = footer.data.value[0]?.navItems as NavItem[]
 
 const currentYear = () => {
-  return new Date().getFullYear();
+  return new Date().getFullYear()
 }
-
 
 </script>
 <style lang="scss" scoped>

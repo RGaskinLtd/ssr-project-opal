@@ -1,0 +1,8 @@
+Model Information:
+* title:	Magic Crystal - Amethyst
+* source:	https://sketchfab.com/3d-models/magic-crystal-amethyst-bccd77a884d84673b051ebf4d747b20e
+* author:	ahingel (https://sketchfab.com/ahingel)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

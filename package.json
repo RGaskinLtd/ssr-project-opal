@@ -6,13 +6,21 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint --ext .vue,.js,.ts . --fix"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@nuxtjs/eslint-module": "^4.1.0",
     "@types/node": "^18.17.1",
+    "@types/three": "^0.160.0",
     "autoprefixer": "^10.4.15",
-    "nuxt": "^3.6.5",
+    "cypress": "^13.3.1",
+    "eslint": "^8.51.0",
+    "eslint-plugin-tailwindcss": "^3.13.0",
+    "nuxt": "^3.9",
     "postcss": "^8.4.28",
     "postcss-simple-vars": "^7.0.1",
     "sass": "^1.65.1",
@@ -20,10 +28,21 @@
   },
   "dependencies": {
     "@nuxtjs/sanity": "^1.8.1",
-    "@sanity/client": "^6.4.6",
+    "@portabletext/vue": "1.0.4",
+    "@sanity/client": "^6.4.11",
     "@sanity/image-url": "^1.0.2",
-    "primevue": "^3.32.1",
-    "primeflex": "3.3.0",
-    "primeicons": "6.0.1"
+    "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
+    "@tresjs/cientos": "^3.7.0",
+    "@tresjs/nuxt": "^2.0.2",
+    "@tresjs/post-processing": "^0.7.0",
+    "@vue/eslint-config-airbnb": "^7.0.0",
+    "@vueuse/components": "^10.4.1",
+    "axios": "^1.6.5",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "gsap": "^3.12.2",
+    "nuxt-simple-robots": "^4.0.0-rc.11",
+    "tailwind-merge": "^2.1.0",
+    "three": "^0.160.0"
   }
 }
