@@ -2,7 +2,7 @@ import type { BlockContent } from '~/types'
 
 export interface Accordion {
   title?: string;
-  summary: string;
+  summary?: string;
   content: BlockContent;
   cta?: CTA;
 }
