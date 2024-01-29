@@ -1,10 +1,11 @@
+<!-- eslint-disable tailwindcss/migration-from-tailwind-2 -->
 <template>
   <nav
     v-if="navBarSettings"
     id="desktop-menu-con"
     ref="nav"
     aria-label="desktop-menu"
-    class="bg-background transition-duration-300 border-secondary sticky top-0 z-[99] flex flex-nowrap items-center justify-between border-b-[1px] border-solid p-4 text-[12px] leading-[12px] text-white transition-all"
+    class="bg-background-800 transition-duration-300 border-secondary fixed top-0 z-[99] flex w-full flex-nowrap items-center justify-between border-b-[1px] border-solid border-opacity-0 bg-opacity-0 p-4 text-[12px] leading-[12px] text-white transition-all"
   >
     <div class="max-wrapper flex flex-nowrap items-center justify-between !p-0">
       <div v-if="navBarSettings?.logoObj?.logo" id="logo">
@@ -255,15 +256,33 @@ function toggleMobileSubMenu (label: string) {
     mobileSubMenuToBeShown.value = null
     return
   }
-  mobileSubMenuToBeShown.value = mobileSubMenuToBeShown.value === label ? null : mobileSubMenuToBeShown.value = label
+  mobileSubMenuToBeShown.value = mobileSubMenuToBeShown.value === label ? null : label
+}
+
+function updateNav () {
+  if (!nav.value) { return }
+  const navHeight = (nav.value as HTMLElement).offsetHeight
+  const percentage = Math.round((window.scrollY / navHeight) * 100) / 100
+
+  const opacity = percentage < 1 ? percentage.toString() : '1';
+
+  (nav.value as HTMLElement).style.setProperty('--tw-bg-opacity', opacity);
+  (nav.value as HTMLElement).style.setProperty('--tw-border-opacity', opacity)
 }
 
 watch(
   () => router.params.slug,
   () => closeMenus()
 )
+watch(nav, () => {
+  if (nav.value) {
+    (nav.value as HTMLElement).style.setProperty('--tw-bg-opacity', '0');
+    (nav.value as HTMLElement).style.setProperty('--tw-border-opacity', '0')
+  }
+})
 onMounted(() => {
   window.addEventListener('resize', closeMenus)
+  document.addEventListener('scroll', updateNav)
 })
 
 </script>
@@ -290,7 +309,7 @@ onMounted(() => {
       @apply text-background;
       &:hover {
         @apply bg-background;
-        @apply text-text;
+        @apply text-main;
       }
     }
   }
@@ -302,7 +321,7 @@ onMounted(() => {
       @apply text-background;
       &:hover {
         @apply bg-background;
-        @apply text-text;
+        @apply text-main;
       }
     }
   }

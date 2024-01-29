@@ -8,7 +8,7 @@ html, body {
 }
 body {
   @apply bg-background;
-  @apply text-text;
+  @apply text-main;
   font-size: 16px;
   @apply font-main;
 }
@@ -164,6 +164,19 @@ a:hover, a.hover, a:focus {
 }
 .no-scroll {
   overflow: hidden;
+}
+.cliped-corner {
+  clip-path: polygon(calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%, 0 0);
+}
+.cliped-corner::before {
+  content: '';
+  @apply w-[calc(100%-6px)] h-[calc(100%-6px)];
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  z-index: -1;
+  clip-path: polygon(calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%, 0 0);
 }
 .green-underline {
   position: relative;

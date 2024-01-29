@@ -1,7 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  modules: ['@nuxtjs/sanity', '@tresjs/nuxt', '@nuxtjs/eslint-module', 'nuxt-simple-robots'],
+  ssr: process.env.NUXT_NODE_ENV === 'prod',
+  experimental: {
+    payloadExtraction: false
+  },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'en'
+      },
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+    }
+  },
+  modules: ['@nuxtjs/sanity', '@nuxtjs/eslint-module', 'nuxt-simple-robots'],
   runtimeConfig: {
     sanity: {
       token: process.env.NUXT_SANITY_TOKEN

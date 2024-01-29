@@ -1,94 +1,127 @@
 <template>
   <div
-    class="hero bg-background text-text"
+    ref="hero"
+    :class="[
+      `hero text-main relative flex size-full items-center bg-cover`,
+      themeStyles(theme),
+      { 'py-2': spacing === 'sm' },
+      { 'py-4': spacing === 'md' },
+      { 'py-6': spacing === 'lg' },
+      { 'py-8': spacing === 'xl' },
+      { 'lg:h-[100vh]': fullScreen },
+      { 'min-h-[40vh]': heroBgImage && !fullScreen },
+    ]"
+    :style="{'background-image': `url(${heroBgImage})`}"
   >
-    <div :class="['inner-wrapper max-wrapper', {'justify-around': heroImage?.asset}, {'justify-start': !heroImage?.asset}]">
-      <div class="text-overlay lg:max-w-7/12 w-full px-6 sm:w-full md:w-full md:px-0">
-        <h1 :class="[{'green-overline': headingObj.greenOverline}]">
-          {{ headingObj.heading }}
-        </h1>
-        <span>{{ tagline }}</span>
+    <img v-if="heroBgImage && fullScreen" :src="heroBgImage" class="absolute size-full object-cover" alt="hero img">
+    <div
+      :class="[
+        'inner-wrapper max-wrapper relative flex size-full flex-wrap items-center px-6',
+        { 'readable': readable },
+        { 'py-12 md:py-16 lg:py-20 xl:py-20': props?.bgImage?.asset?._ref },
+        { 'justify-around': heroImage?.asset || threeDModel },
+        { 'justify-between': productsNavigation?.products },
+        { 'justify-start': !heroImage?.asset && !threeDModel }
+      ]"
+    >
+      <div
+        :class="[
+          'text-overlay',
+          { 'md:w-6/12': !hasTextOnly },
+          { 'md:w-full': hasTextOnly && !maxWidth },
+          { 'lg:w-6/12': maxWidth === '6/12' },
+          { 'lg:w-7/12': maxWidth === '7/12' },
+          { 'lg:w-8/12': maxWidth === '8/12' },
+          { 'lg:w-9/12': maxWidth === '9/12' },
+          { 'lg:w-10/12': maxWidth === '10/12' },
+          { 'lg:w-11/12': maxWidth === '11/12' },
+          { 'lg:w-full': maxWidth === 'full' },
+        ]"
+      >
+        <p v-if="eyebrow" class="font-HeadlineBold !text-sm uppercase tracking-[2px] opacity-80">
+          {{ eyebrow }}
+        </p>
+        <BlockContent v-if="mainContent" :content="mainContent" />
+        <div v-if="ctas?.length" class="ctas flex flex-col flex-wrap">
+          <POButton
+            v-for="(cta, index) in ctas"
+            :key="index"
+            class="mr-4 mt-6"
+            :color="cta.color"
+            :link="cta[cta.linkType]"
+          >
+            {{ cta.text }}
+          </POButton>
+        </div>
       </div>
-
-      <div v-if="heroImage" class="hero-image lg:max-w-4/12 max-w-7/12 flex justify-center pt-8 sm:pt-8 md:pt-8 lg:px-3 lg:pt-0">
+      <ProductNav
+        v-if="productsNavigation"
+        :show-title="false"
+        class="md:max-w-50 pt-12 sm:pt-12 md:pl-4 md:pt-12 lg:px-3 lg:pt-0"
+        v-bind="productsNavigation"
+      />
+      <div v-else-if="heroImage" class="max-w-90 lg:max-w-30 w-full pt-8 sm:max-w-60 sm:pt-8 md:pt-8 lg:px-3 lg:pt-0">
+        <img v-if="heroImage.asset" class="w-full" :src="heroImage.asset" :alt="heroImage.alt">
+      </div>
+      <div v-else-if="threeDModel" class="md:max-w-4/12 max-w-7/12 flex w-full justify-center pt-8 sm:pt-8 md:pt-8 lg:px-3 lg:pt-0">
         <OpalThree />
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import type { BlockContent, Theme } from '~/types'
+import type { CTA } from '~/utils/cta'
 const { $urlFor } = useNuxtApp()
 interface Props {
-  headingObj: {
-    heading: string;
-    greenOverline: string;
-  };
-  tagline?: string;
-  bgColor?: {
-    hex: string;
-  };
-  textColor?: {
-    hex: string;
-  };
+  eyebrow?: string;
+  readable?: boolean;
+  template: 'full' | 'normal';
+  spacing?: 'sm'|'md'|'lg'|'xl';
+  maxWidth?: '6/12' | '7/12' | '8/12' | '9/12' | '10/12' | '11/12' | 'full';
+  mainContent?: BlockContent;
+  ctas?: CTA[];
+  theme: Theme;
   bgImage?: {
-    asset: {
-      _ref: string;
-      _type: string;
-    },
-    alt: string;
+    asset: { _ref: string },
+  };
+  productsNavigation?: {
+    bgImage: string;
+    products: [{
+      name: string;
+      link: string;
+      image: {
+        asset: { _ref: string; }
+      };
+    }]
   };
   heroImage?: {
-    asset: {
-      _ref: string;
-      _type: string;
-    },
+    asset: string,
     alt: string;
   };
+  threeDModel?: boolean;
 }
 const props = defineProps<Props>()
-const heroBgImage = ref('')
+const hero = ref<HTMLElement>()
+const fullScreen = computed(() => props.template === 'full')
+const hasTextOnly = computed(() => (!props.productsNavigation && !props.heroImage && !props.threeDModel))
 
+const heroBgImage = ref('')
 function getHeroImage () {
   if (!props.bgImage) { return }
-  const width = window.innerWidth
-  const isMobile = width < 768
-  const isTablet = width < 1024
-  const isDesktop = width >= 1024
 
-  if (isMobile) { return $urlFor(props.bgImage.asset._ref).width(768).height(400).url() }
-  if (isTablet) { return $urlFor(props.bgImage.asset._ref).width(1024).height(500).url() }
-  if (isDesktop) { return $urlFor(props.bgImage.asset._ref).width(1920).height(500).url() }
+  const width = hero.value?.offsetWidth
+  const height = hero.value?.offsetHeight
+  if (!width || !height) { return $urlFor(props?.bgImage?.asset?._ref)?.url() }
+  return $urlFor(props.bgImage.asset._ref)?.width(width)?.height(height).dpr(2)?.url()
 }
 function setHeroImage () {
   heroBgImage.value = getHeroImage() ?? ''
 }
-onMounted(() => {
-  setHeroImage()
-  window.addEventListener('resize', setHeroImage)
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', setHeroImage)
-})
+setHeroImage()
 </script>
 <style lang="scss" scoped>
-.hero {
-  width: 100%;
-  position: relative;
-  color: #fff;
-  background-size: cover;
-  img {
-    width: 100%;
-  }
-  .inner-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 3rem 0;
-    .hero-image {
-      width: 100%;
-    }
-  }
+.max-wrapper {
+  @apply pt-24 lg:pt-6 pb-12 p-6 lg:p-6;
 }
 </style>

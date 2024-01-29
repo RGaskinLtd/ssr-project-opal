@@ -1,47 +1,32 @@
 <template>
   <div
-    class="infoSection bg-background text-white"
+    class="infoSection bg-background flex text-white"
   >
-    <div :class="['inner-wrapper max-wrapper', {'lg:flex-row-reverse': content?.reverseDirection}]">
-      <div class="text-overlay lg:max-w-7/12 w-full px-6 md:px-0">
-        <h2 v-if="content?.headingObj" :class="{'green-overline': content.headingObj.greenOverline}">
-          {{ content?.headingObj.heading }}
-        </h2>
-        <SanityContent v-if="content?.tagline" :blocks="content.tagline" />
+    <div :class="['relative flex flex-row flex-wrap items-center',{'md:flex-row-reverse': reverseDirection}]">
+      <div class="md:max-w-6/12 bg-main-900 flex items-center px-4 py-8 md:size-full md:p-8">
+        <div class="w-full">
+          <BlockContent v-if="content" :content="content" />
+        </div>
       </div>
-      <div v-if="content?.image" class="image lg:max-w-4/12 max-w-60 pt-8 sm:pt-8 md:pt-8 lg:px-3 lg:pt-0">
-        <img v-if="content?.image.asset" :src="$urlFor(content.image.asset._ref).url()" :alt="content.image.alt">
+      <div v-if="image" class="md:max-w-6/12 md:size-full">
+        <img v-if="image.asset" class="size-full object-cover" :src="image.asset" :alt="image.alt">
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { PortableTextBlock } from '@portabletext/types'
+import type { BlockContent } from '~/types'
 const { $urlFor } = useNuxtApp()
 interface Props {
-  content?: {
-    headingObj?: {
-      heading: string;
-      greenOverline: string;
-    };
-    tagline?: PortableTextBlock;
-    reverseDirection?: boolean;
-    image?: {
-      asset: {
-        _ref: string;
-        _type: string;
-      },
-      alt: string;
-    };
-  };
-  bgColor?: {
-    hex: string;
-  };
-  textColor?: {
-    hex: string;
+  content?: BlockContent;
+  reverseDirection?: boolean;
+  image?: {
+    asset: string;
+    alt: string;
   };
 }
 const props = defineProps<Props>()
+
 </script>
 <style lang="scss" scoped>
 .infoSection {

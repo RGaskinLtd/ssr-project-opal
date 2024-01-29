@@ -41,10 +41,10 @@ camera.position.set(0, 0.5, 3)
 
 scene.add(camera)
 
-const ambientLight = new AmbientLight(0xFFFFFF, 1)
+const ambientLight = new AmbientLight(0x3700B3, 7)
 scene.add(ambientLight)
 
-const directionalLight = new DirectionalLight(0xFFFFFF, 2)
+const directionalLight = new DirectionalLight(0xB899FF, 10)
 directionalLight.position.set(3, 3, 3)
 scene.add(directionalLight)
 
@@ -62,7 +62,7 @@ function updateCamera () {
 function updateRenderer () {
   renderer.setSize(width.value, height.value)
   renderer.render(scene, camera)
-  const bloomPass = new UnrealBloomPass(new Vector2(width.value, height.value), 1, 1, 1)
+  const bloomPass = new UnrealBloomPass(new Vector2(width.value, height.value), 10, 5, 10)
   const luminancePass = new ShaderPass(LuminosityShader)
   composer.addPass(renderPass)
   composer.addPass(bloomPass)
@@ -111,7 +111,7 @@ const loop = () => {
   // controls.update()
   renderer.render(scene, camera)
   requestAnimationFrame(loop)
-  scene.children[3].children[0].rotation.z += 0.01
+  scene.children[3].children[0].rotation.z += 0.005
 }
 </script>
 <template>
