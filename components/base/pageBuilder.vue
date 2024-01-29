@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { createClient } from '@sanity/client'
-import { hero, cards, productsNavigation, stats, infoSection, soloCta, accordions, content, splitContent, imageBanner, multiInfoSection } from '@/component_querys'
+import { hero, cards, productsNavigation, stats, infoSection, soloCta, accordions, content, splitContent, imageBanner, multiInfoSection, splitImages } from '@/component_querys'
 interface Props {
   slug: string
   documentType?: string;
@@ -41,6 +41,7 @@ const mainQuery = `
     ${accordions},
     ${content},
     ${splitContent},
+    ${splitImages},
     ${imageBanner}
 `
 const query = groq`*[_type == "${props.documentType}" && slug.current == "${props.slug}" ][0] {
@@ -77,6 +78,7 @@ const sanity = createClient(useSanity().config)
 const { data, error } = await useAsyncData(async () => {
   return await sanity.fetch<Page>(query)
 })
+
 if (!data.value || error.value) { throw createError({ statusCode: 404, fatal: true }) }
 
 // update page with data

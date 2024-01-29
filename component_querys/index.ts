@@ -8,5 +8,6 @@ import { soloCta } from './soloCta'
 import { accordions } from './accordions'
 import { content } from './content'
 import { splitContent } from './splitContent'
+import { splitImages } from './splitImages'
 import { imageBanner } from './imageBanner'
-export { hero, cards, productsNavigation, infoSection, multiInfoSection, stats, soloCta, accordions, content, splitContent, imageBanner }
+export { hero, cards, productsNavigation, infoSection, multiInfoSection, stats, soloCta, accordions, content, splitContent, splitImages, imageBanner }
