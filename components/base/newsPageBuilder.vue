@@ -6,7 +6,7 @@
         <div class="content w-full lg:w-[calc(100%-4.5rem)]">
           <BlockContent v-if="data?.content" :content="data?.content" />
         </div>
-        <!-- <SocialIcons :summary="data?.summary ? toPlainText(data?.summary) : data?.title ?? ''" /> -->
+        <SocialIcons :summary="data?.summary ? toPlainText(data?.summary) : data?.title ?? ''" />
       </div>
       <h2 class="pt-12">
         More articles from Project Opal.

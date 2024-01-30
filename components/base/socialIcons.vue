@@ -1,5 +1,5 @@
 <template>
-  <div class="social sticky top-0 flex flex-row flex-wrap gap-6 pt-4 lg:h-[460px] lg:w-[4.5rem] lg:flex-col lg:pt-28">
+  <div class="social sticky top-0 flex flex-row flex-wrap items-center justify-center gap-6 pt-4 lg:h-[460px] lg:w-[4.5rem] lg:flex-col lg:pt-28">
     <a class="linkedin" target="_blank" :href="getShareLink('linkedin', summary)">
       <div class="icon">
         <svg
@@ -56,11 +56,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { PortableTextBlock, PortableTextMarkDefinition, ArbitraryTypedObject, PortableTextSpan } from '@portabletext/types'
 interface Props {
   summary: string;
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const router = useRouter()
 function getShareLink (type: 'linkedin' | 'twitter' | 'facebook', text: string) {
@@ -69,27 +68,27 @@ function getShareLink (type: 'linkedin' | 'twitter' | 'facebook', text: string) 
     twitter: 'https://twitter.com/share',
     facebook: 'https://www.facebook.com/sharer.php'
   }
-  const baseUrl = 'https://evident.global'
+  const baseUrl = 'https://projectopal.co'
   const path = router.currentRoute.value.fullPath
   const fullUrl = baseUrl + path
   const encodedUrl = encodeURIComponent(fullUrl)
   const encodedText = encodeURIComponent(text)
 
   if (type === 'linkedin') { return `${types[type]}?title=${encodedText}&url=${encodedUrl}` }
-  if (type === 'twitter') { return `${types[type]}?text=${encodedText}&url=${encodedUrl}&via=https%3A%2F%2Ftwitter.com%2FEvidentGlobal` }
+  if (type === 'twitter') { return `${types[type]}?text=${encodedText}&url=${encodedUrl}` }
   if (type === 'facebook') { return `${types[type]}?u=${encodedUrl}` }
 }
 </script>
 <style lang="scss" scoped>
 .social.sticky:before {
-  @apply lg:content-[''] bg-main-800 w-[2px] h-full block absolute left-[calc(50%-5px)] z-[-1] top-[-3.5rem];
+  @apply lg:content-[''] bg-primary-400 w-[2px] h-full block absolute left-[50%] z-[-1] top-[-3.5rem];
 }
 
 .social {
   a {
-    @apply bg-accent inline-flex w-fit;
+    @apply inline-flex w-fit;
     .icon {
-      @apply w-8 h-8 flex justify-center items-center bg-primary rounded-[3px];
+      @apply w-10 h-10 flex justify-center items-center bg-primary-400 rounded-[3px];
     }
   }
   svg {
@@ -102,7 +101,7 @@ function getShareLink (type: 'linkedin' | 'twitter' | 'facebook', text: string) 
       }
       &:hover {
         path:not(#background), rect {
-          @apply fill-accent;
+          @apply fill-secondary;
         }
       }
     }
@@ -111,7 +110,7 @@ function getShareLink (type: 'linkedin' | 'twitter' | 'facebook', text: string) 
     svg {
       @apply fill-background;
       &:hover {
-        @apply fill-accent;
+        @apply fill-secondary;
       }
     }
   }
