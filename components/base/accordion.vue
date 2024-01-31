@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="toggle cliped-corner flex size-[55px] cursor-pointer items-center justify-center">
+      <div :class="['toggle cliped-corner flex size-[55px] cursor-pointer items-center justify-center', theme]">
         <svg
           v-if="!isOpen"
           xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@
     >
       <div v-if="isOpen" class="content overflow-hidden py-6 pr-20 transition-all duration-300 ease-in-out">
         <BlockContent v-if="content" :content="content" />
-        <POButton v-if="cta && cta.linkType" class="mt-4" v-bind="{...cta}" :link="cta?.[cta.linkType]">
+        <POButton v-if="cta && cta.linkType" :class="['mt-4', theme]" v-bind="{...cta}" :link="cta?.[cta.linkType]" @click.stop>
           {{ cta.text }}
         </POButton>
       </div>
@@ -104,6 +104,12 @@ const themeClasses = computed(() => props.theme === 'light' ? 'border-background
 </script>
 <style lang="scss" scoped>
 .toggle {
+  &.light {
+    @apply bg-black relative;
+    &::before {
+      @apply bg-white;
+    }
+  }
   @apply bg-accent relative;
   clip-path: polygon(calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%, 0 0);
   &::before {

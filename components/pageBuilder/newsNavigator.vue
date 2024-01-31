@@ -25,7 +25,13 @@
           </button>
         </Transition>
       </div>
-      <div class="flex w-full flex-wrap justify-between gap-8 pb-4">
+      <div
+        :class="[
+          'flex w-full flex-wrap gap-8 pb-4',
+          {'justify-start': newsArticles.length <= 2},
+          {'justify-between': newsArticles.length >= 3}
+        ]"
+      >
         <CardArticle
           v-for="(newsArticle, index) in newsArticles"
           :key="index"

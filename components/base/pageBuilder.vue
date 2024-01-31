@@ -104,4 +104,14 @@ function updateComponents (pageBuilder: any[]) {
     }
   })
 }
+
+const { $autoFormatClasses } = useNuxtApp()
+
+watch(components, () => {
+  nextTick(() => $autoFormatClasses())
+})
+// hooks
+onMounted(() => {
+  nextTick(() => $autoFormatClasses())
+})
 </script>

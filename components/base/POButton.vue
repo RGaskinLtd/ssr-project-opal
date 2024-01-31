@@ -110,6 +110,19 @@ const getLinkType = computed(() => {
     }
   }
   &.opal {
+    &.light {
+      @apply bg-black text-black;
+      &::before {
+        @apply bg-white;
+      }
+      &:hover,&:focus {
+        @apply bg-black;
+        @apply text-white;
+        &::before {
+          @apply bg-black text-white;
+        }
+      }
+    }
     @apply bg-accent;
     @apply text-main;
     clip-path: polygon(calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%, 0 0);

@@ -1,4 +1,5 @@
 import { blockContent } from './blockContent'
+import { cta } from './cta'
 
 export const multiInfoSection = `
 _type == 'multiInfoSection' => {
@@ -15,10 +16,14 @@ _type == 'multiInfoSection' => {
       ${blockContent}
     },
     accordionsGroup {
-      title[]{
-        ${blockContent}
-      },
       ...,
+      accordions[]{
+        ...,
+        content[]{
+          ${blockContent}
+        },
+        ${cta}
+      }
     }
   }
 }

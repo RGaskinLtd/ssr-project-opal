@@ -14,11 +14,18 @@
         {'relative -top-20': skewedBackground}
       ]"
     >
-      <div class="max-w-[50rem] pb-12 pt-8 text-center">
+      <div :class="['max-w-[50rem] pb-12 text-center', {'pt-8': !skewedBackground},{'pt-24': skewedBackground}]">
         <BlockContent v-if="headerContent" :content="headerContent" />
       </div>
 
-      <div v-if="cardTemplate === 'summary' && cardsSummary?.length" class="flex w-full flex-wrap justify-between gap-8">
+      <div
+        v-if="cardTemplate === 'summary' && cardsSummary?.length"
+        :class="[
+          'flex w-full flex-wrap gap-8',
+          {'justify-center': cardsSummary.length <= 2},
+          {'justify-between': cardsSummary.length >= 3 }
+        ]"
+      >
         <SummaryCard
           v-for="(card, index) in cardsSummary"
           :key="index"
@@ -28,7 +35,14 @@
           v-bind="{...card}"
         />
       </div>
-      <div v-if="cardTemplate === 'shortArticle' && cardsShortArticle?.length" class="flex w-full flex-wrap justify-between gap-8">
+      <div
+        v-if="cardTemplate === 'shortArticle' && cardsShortArticle?.length"
+        :class="[
+          'flex w-full flex-wrap gap-8',
+          {'justify-center': cardsShortArticle.length <= 2},
+          {'justify-between': cardsShortArticle.length >= 3}
+        ]"
+      >
         <ShortArticleCard
           v-for="(card, index) in cardsShortArticle"
           :key="index"

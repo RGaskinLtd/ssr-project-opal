@@ -1,5 +1,5 @@
 <template>
-  <div v-if="image && content" :class="['split-content bg-background-800 flex flex-wrap items-center justify-center p-6 pb-20 md:flex-nowrap', themeStyles(theme)]">
+  <div v-if="image && content" :class="['split-content flex flex-wrap items-center justify-center p-6 pb-20 md:flex-nowrap', themeStyles(theme), {'flex-row-reverse': invert}]">
     <div class="flex w-full items-center justify-center md:w-6/12">
       <img class="cliped-corner w-full rounded-[3px]" :src="image" :alt="alt">
     </div>
@@ -24,6 +24,13 @@ defineProps<Props>()
 </script>
 <style lang="scss" scoped>
 .split-content {
+  &.flex-row-reverse {
+    div {
+      img {
+        clip-path: polygon(100px 0%, 100% 0, 100% 100%, 0 100%, 0% 100px);
+      }
+    }
+  }
   div {
     img {
       clip-path: polygon(calc(100% - 100px) 0, 100% 100px, 100% 100%, 0 100%, 0 0);

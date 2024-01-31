@@ -1,5 +1,5 @@
 <template>
-  <div :class="[themeStyles(theme), 'pt-8']">
+  <div :class="[themeStyles(theme), 'py-8']">
     <div :class="['max-wrapper', { readable }]">
       <div v-if="title" class="title pb-4">
         <BlockContent :content="title" />
