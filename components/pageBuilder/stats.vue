@@ -2,7 +2,9 @@
   <div
     :class="['relative flex w-full justify-center py-8', themeStyles(theme)]"
   >
-    <div class="max-wrapper flex w-full flex-wrap">
+    <div
+      class="max-wrapper flex w-full flex-wrap justify-center"
+    >
       <h3 v-if="title">
         {{ title }}
       </h3>

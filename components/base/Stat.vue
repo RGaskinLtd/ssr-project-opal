@@ -14,15 +14,15 @@
           <span
             v-if="isVisible"
             v-element-visibility="updateNumber"
-            class="text-[30px] font-bold leading-none transition-all duration-300 lg:text-[60px]"
+            class="font-main text-[30px] font-bold leading-none transition-all duration-300 lg:text-[60px]"
             :data-value="value"
           >{{ numAnimation.number.toFixed(0) }}</span>
           <small
             v-if="unit"
-            class="pl-2 text-[30px] font-bold leading-none transition-all duration-300 lg:text-[60px]"
+            class="font-main pl-2 text-[30px] font-bold leading-none transition-all duration-300 lg:text-[60px]"
           >{{ unit }}</small>
         </div>
-        <sup v-if="info" class="text-base font-light leading-none">{{ info }}</sup>
+        <sup v-if="info" class="font-main mt-4 text-base font-light leading-none">{{ info }}</sup>
       </UseElementVisibility>
     </div>
   </div>
