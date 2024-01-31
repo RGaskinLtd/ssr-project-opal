@@ -67,7 +67,11 @@ if (data.value?.length && !error.value) {
 // Slider Logic
 function prevSlide () {
   const slidWidth = personWidth.value + gapWidth.value
-  if (sliderPosition.value >= slidWidth) { sliderPosition.value = sliderPosition.value - slidWidth }
+  if (sliderPosition.value >= slidWidth) {
+    const newVal = sliderPosition.value - slidWidth
+    // we only do this to make sure the maths always aligns even if the browser width is off by a billionth of a point
+    if (newVal < slidWidth) { sliderPosition.value = 0 } else { sliderPosition.value = sliderPosition.value - slidWidth }
+  }
   hasHitEndSlide.value = false
 }
 function nextSlide () {
@@ -86,7 +90,7 @@ const styling = computed(() => {
   if (!props.slider) {
     return {
       con: 'max-wrapper gap-8 flex w-full flex-wrap justify-center',
-      person: 'person cliped-corner w-full p-4 pb-12 sm:w-[calc((100%/2)-1rem)] md:w-[calc((100%/3)-1.33333333333rem)] lg:w-[calc((100%/4)-2rem)]'
+      person: 'person bg-accent relative before:bg-primary cliped-corner w-full p-4 pb-12 sm:w-[calc((100%/2)-1rem)] md:w-[calc((100%/3)-1.33333333333rem)] lg:w-[calc((100%/4)-2rem)]'
     }
   } else {
     return {
@@ -99,7 +103,7 @@ const styling = computed(() => {
 })
 
 function updateSizes (event: any) {
-  if (typeof event === 'number') { windowSize.value = event } else { windowSize.value = event.target?.outerWidth }
+  if (typeof event === 'number') { windowSize.value = event } else { windowSize.value = event.target?.innerWidth }
   const isMobile = windowSize.value <= 600
   const isTablet = windowSize.value > 600 && windowSize.value < 1200
   const isLaptop = windowSize.value >= 1200 && windowSize.value < 1600
@@ -118,7 +122,7 @@ function updateSizes (event: any) {
   hasHitEndSlide.value = false
 }
 onMounted(() => {
-  updateSizes(window.outerWidth)
+  updateSizes(window.innerWidth)
   window.addEventListener('resize', updateSizes)
 })
 onBeforeUnmount(() => {
@@ -132,7 +136,7 @@ onBeforeUnmount(() => {
   }
 }
 a.person {
-  @apply bg-accent relative no-underline before:bg-primary;
+  @apply no-underline;
   &.light { @apply text-main; }
   &.dark { @apply text-main; }
 }
