@@ -1,5 +1,5 @@
 <template>
-  <div v-if="image && content" :class="['split-content flex flex-wrap items-center justify-center p-6 pb-20 md:flex-nowrap', themeStyles(theme), {'flex-row-reverse': invert}]">
+  <div v-if="image && content" :class="['split-content flex flex-wrap items-center justify-center p-6 md:flex-nowrap', themeStyles(theme), {'flex-row-reverse': invert}]">
     <div class="flex w-full items-center justify-center md:w-6/12">
       <img class="cliped-corner w-full rounded-[3px]" :src="image" :alt="alt">
     </div>

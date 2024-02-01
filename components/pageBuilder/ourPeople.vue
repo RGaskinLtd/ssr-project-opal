@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
 }
 a.person {
   @apply no-underline;
-  &.light { @apply text-main; }
+  &.light { @apply text-black; }
   &.dark { @apply text-main; }
 }
 .light {

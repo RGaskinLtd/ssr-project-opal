@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-lightGray text-dark">
+  <div :class="['bg-lightGray text-dark', themeStyles(theme)]">
     <div class="latest-news max-wrapper flex w-full flex-wrap justify-center">
-      <h1 v-if="title" class="pb-12">
+      <h1 v-if="title" class="pb-12 pt-8">
         {{ title }}
       </h1>
       <div
@@ -16,6 +16,7 @@
           :key="index"
           :published="newsArticle.oldPublishedDate ?? newsArticle.published"
           :image="newsArticle.image"
+          :theme="theme"
           :tag="newsArticle.tag"
           :title="newsArticle.title"
           :content="newsArticle.summary"
@@ -23,7 +24,7 @@
         />
       </div>
       <div class="more-news-cta flex w-full items-center justify-center py-12">
-        <POButton color="opal" btn-style="po" link="/news">
+        <POButton :class="theme" color="opal" btn-style="po" link="/news">
           More News
         </POButton>
       </div>
@@ -33,9 +34,10 @@
 <script setup lang="ts">
 import { createClient } from '@sanity/client'
 import { blockContent } from '~/component_querys/blockContent'
-import type { NewsArticle } from '~/types'
+import type { NewsArticle, Theme } from '~/types'
 
 interface Props {
+  theme: Theme;
   title?: string;
 }
 defineProps<Props>()

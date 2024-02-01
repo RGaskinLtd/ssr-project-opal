@@ -1,14 +1,19 @@
 <template>
   <NuxtLink
-    :class="`
+    :class="[
+      `
       article cliped-corner
-      shadow-light relative box-border flex w-full flex-wrap
-      justify-start rounded-[3px]
-      bg-accent text-main hover:cursor-pointer
-      before:bg-primary
+      shadow-light relative box-border
+      flex w-full
+      flex-wrap justify-start rounded-[3px]
+      hover:cursor-pointer
       md:w-[calc(calc(100%-2rem)/2)]
       lg:w-[calc(calc(100%-4rem)/3)]
-    `"
+      `,
+      {'bg-accent text-main before:bg-primary': theme === 'dark'},
+      {'bg-black text-black before:bg-white': theme === 'light'},
+      theme
+    ]"
     :to="link"
     @click="checkPath(link)"
   >
@@ -50,7 +55,7 @@
       <div class="absolute bottom-0 left-0 flex w-full items-end justify-between p-[18px]">
         <POButton
           btn-style="arrow"
-          class="read-more"
+          :class="['read-more', theme]"
         >
           Read More
         </POButton>
@@ -68,11 +73,13 @@ import type {
   ArbitraryTypedObject,
   PortableTextSpan
 } from '@portabletext/types'
+import type { Theme } from '~/types'
 interface Props {
   published: string;
   image: string;
   tag?: string;
   title: string;
+  theme: Theme;
   content: PortableTextBlock<PortableTextMarkDefinition, ArbitraryTypedObject | PortableTextSpan, string, string>[];
   link: string;
 }
@@ -80,6 +87,14 @@ interface Props {
 const props = defineProps<Props>()
 </script>
 <style lang="scss" scoped>
+  .light {
+    .read-more {
+      @apply text-black;
+    }
+    &.article {
+      @apply text-black;
+    }
+  }
   .read-more {
     @apply font-headerBold text-main;
   }

@@ -2,9 +2,11 @@
   <div
     :class="[
       `
-      cliped-corner before:bg-primary relative box-border flex w-full flex-wrap
+      cliped-corner relative box-border flex w-full flex-wrap
       justify-start rounded-[3.6px] xl:w-[calc(calc(100%-4rem)/3)]
       `,
+      { 'before:bg-primary': theme === 'dark' },
+      { 'before:bg-white': theme === 'light' },
       { 'md:w-[calc(calc(100%-4rem)/3)]': isSummary },
       { 'md:w-[calc(calc(100%-2rem)/2)]': !isSummary },
       { 'shadow-main': cardShadow },
@@ -36,7 +38,8 @@
       <POButton
         :link="cta[cta.linkType]"
         :btn-style="cta?.style ?? 'arrow'"
-        :color="cta.color ?? 'black'"
+        :color="cta.color ?? 'opal'"
+        :class="theme"
       >
         {{ cta.text }}
       </POButton>
@@ -59,6 +62,6 @@ interface Props {
 const props = defineProps<Props>()
 const isSummary = computed(() => props?.cardTemplate === 'summary')
 const themeClasses = computed(() => {
-  return props.theme === 'dark' ? 'bg-accent text-main' : 'bg-white text-black'
+  return props.theme === 'dark' ? 'bg-accent text-main' : 'bg-black text-black'
 })
 </script>
