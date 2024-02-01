@@ -4,6 +4,7 @@
     :class="[
       `hero text-main relative flex size-full items-center bg-cover`,
       themeStyles(theme),
+      theme,
       { 'py-2': spacing === 'sm' },
       { 'py-4': spacing === 'md' },
       { 'py-6': spacing === 'lg' },
@@ -46,7 +47,7 @@
           <POButton
             v-for="(cta, index) in ctas"
             :key="index"
-            class="mr-4 mt-6"
+            :class="['mr-4 mt-6', theme]"
             :color="cta.color"
             :link="cta[cta.linkType]"
           >
@@ -123,5 +124,10 @@ setHeroImage()
 <style lang="scss" scoped>
 .max-wrapper {
   @apply pt-24 lg:pt-6 pb-12 p-6 lg:p-6;
+}
+.light {
+  .text-overlay {
+    @apply text-black
+  }
 }
 </style>
